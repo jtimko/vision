@@ -152,6 +152,7 @@ export interface NexusGenArgTypes {
     addNotes: { // args
       id: number; // Int!
       note: string; // String!
+      userId: number; // Int!
     }
     login: { // args
       email: string; // String!
