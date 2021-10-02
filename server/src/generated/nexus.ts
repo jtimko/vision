@@ -150,7 +150,6 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     addNotes: { // args
-      id: number; // Int!
       note: string; // String!
       userId: number; // Int!
     }

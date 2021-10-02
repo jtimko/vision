@@ -180,18 +180,15 @@ const Mutation = objectType({
           //     type: 'UserUniqueInput',
           //   }),
           // ),
-          id: nonNull(intArg()),
+          //id: nonNull(intArg()),
           note: nonNull(stringArg()),
           userId: nonNull(intArg())
         }, 
         resolve: (_, args, context) => {
           return context.prisma.notes.create({
             data: {
-              id: args.id,
+              //id: args.id,
               note: args.note,
-              user: {
-                connect: {id: args.userId},
-              },
               userId: args.userId
               // user: {
               //   connect: {
