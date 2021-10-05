@@ -107,13 +107,14 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     allUsers: NexusGenRootTypes['User'][]; // [User!]!
     me: NexusGenRootTypes['User'] | null; // User
+    userNotes: NexusGenRootTypes['User'][]; // [User!]!
     users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
   User: { // field return type
     email: string; // String!
     id: number; // Int!
     name: string | null; // String
-    notes[]: NexusGenRootTypes['Notes'] | null; // Notes
+    notes: NexusGenRootTypes['Notes'][]; // [Notes!]!
     password: string; // String!
   }
 }
@@ -136,13 +137,14 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     allUsers: 'User'
     me: 'User'
+    userNotes: 'User'
     users: 'User'
   }
   User: { // field return type name
     email: 'String'
     id: 'Int'
     name: 'String'
-    notes[]: 'Notes'
+    notes: 'Notes'
     password: 'String'
   }
 }

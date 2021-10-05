@@ -1,5 +1,5 @@
 import './App.css';
-import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink, gql, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import Notes from './components/Notes';
 import SendMessage from './components/SendMessage';
@@ -31,16 +31,16 @@ const client = new ApolloClient({
 	cache: new InMemoryCache()
 })
 
+
 function App() {
 
-  const [data, setData] = useState<UserData[]>([{
+  const [userData, setUserData] = useState<UserData[]>([{
     id: 1,
     message: "Sometimes waking up is enough <3"
   }])
-  // const [msg, setMsg] = useState("")
-
+  
   const saveMessage = (msg: string): void => {
-    setData([...data,  { id: 1, message: msg }])
+    setUserData([...userData,  { id: 1, message: msg }])
   }
 
   return (
@@ -51,7 +51,7 @@ function App() {
             <Users />
           </Route>
           <Route path="/notes">
-            <Notes data={data} />
+            <Notes />
             <SendMessage saveMessage={saveMessage} />
           </Route>
           <Route path="/">

@@ -19,7 +19,7 @@ model Notes {
   id        Int     @id @default(autoincrement())
   note      String
   //status    Boolean @default(true)
-  //createdDate DateTime @default(now())
+  createdDate DateTime @default(now())
   user      User?   @relation(fields: [userId], references: [id])
   userId    Int?    
 }

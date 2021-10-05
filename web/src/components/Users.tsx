@@ -25,7 +25,6 @@ const Users = () => {
 
     return (
         <div>
-            {console.log(data.users)}
             {data.users.map((user: User) => {
                 return (
                     <p>{user.email}</p>

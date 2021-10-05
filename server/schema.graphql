@@ -36,6 +36,7 @@ input PostOrderByUpdatedAtInput {
 type Query {
   allUsers: [User!]!
   me: User
+  userNotes: [User!]!
   users: [User]
 }
 
@@ -48,7 +49,7 @@ type User {
   email: String!
   id: Int!
   name: String
-  notes[]: Notes
+  notes: [Notes!]!
   password: String!
 }
 
