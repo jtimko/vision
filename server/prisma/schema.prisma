@@ -12,7 +12,7 @@ model User {
   email    String  @unique
   password String
   name     String?
-  notes    Notes?
+  notes    Notes[]
 }
 
 model Notes {
@@ -20,6 +20,6 @@ model Notes {
   note      String
   //status    Boolean @default(true)
   //createdDate DateTime @default(now())
-  user      User   @relation(fields: [userId], references: [id])
-  userId    Int     
+  user      User?   @relation(fields: [userId], references: [id])
+  userId    Int?    
 }

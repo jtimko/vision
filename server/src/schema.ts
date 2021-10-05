@@ -172,34 +172,23 @@ const Mutation = objectType({
       },
     })
 
-    t.field('addNotes', {
-      type: 'Notes',
+    t.field("addNotes", {
+      type: "Notes",
         args: {
-          // userUniqueInput: nonNull(
-          //   arg({
-          //     type: 'UserUniqueInput',
-          //   }),
-          // ),
-          //id: nonNull(intArg()),
-          note: nonNull(stringArg()),
-          userId: nonNull(intArg())
+          note: stringArg()
         }, 
-        resolve: (_, args, context) => {
-          return context.prisma.notes.create({
-            data: {
-              //id: args.id,
-              note: args.note,
-              userId: args.userId
-              // user: {
-              //   connect: {
-              //     id: args.userUniqueInput.id || undefined,
-              //     email: args.userUniqueInput.email || undefined,
-              //   }
-              //}
-            }
-          })
+        resolve: (parent, { note }, context) => {
+          const userId = getUserId(context)
+          if (!userId) throw new Error("Could not authenticate user.")
+            return context.prisma.notes.create({
+              data: {
+                note: note as string,
+                user: { connect: { id: Number(userId)}}
+              }
+            })
         }
       })
+
     // t.field('createDraft', {
     //   type: 'Post',
     //   args: {
@@ -305,7 +294,7 @@ const User = objectType({
     t.nonNull.string('email')
     t.nonNull.string('password')
     t.string('name')
-    t.field('notes', {
+    t.field('notes[]', {
       type: 'Notes',
       resolve: (parent, _, context) => {
         return context.prisma.user.findUnique({

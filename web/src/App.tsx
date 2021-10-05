@@ -1,10 +1,12 @@
 import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink } from '@apollo/client';
 import { useState } from 'react';
-// import Users from './components/Users';
 import Notes from './components/Notes';
 import SendMessage from './components/SendMessage';
 import { setContext } from 'apollo-link-context';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import Users from './components/Users';
+import Login from './components/Login';
 
 export interface UserData {
   id: number
@@ -43,12 +45,20 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        {/* <Users /> */}
-        <Notes data={data} />
-
-        <SendMessage saveMessage={saveMessage} />
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/notes">
+            <Notes data={data} />
+            <SendMessage saveMessage={saveMessage} />
+          </Route>
+          <Route path="/">
+            <Login />
+          </Route>
+        </Switch>
+      </Router>
     </ApolloProvider>
    
   );

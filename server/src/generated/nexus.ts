@@ -113,7 +113,7 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     id: number; // Int!
     name: string | null; // String
-    notes: NexusGenRootTypes['Notes'] | null; // Notes
+    notes[]: NexusGenRootTypes['Notes'] | null; // Notes
     password: string; // String!
   }
 }
@@ -142,7 +142,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'Int'
     name: 'String'
-    notes: 'Notes'
+    notes[]: 'Notes'
     password: 'String'
   }
 }
@@ -150,8 +150,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     addNotes: { // args
-      note: string; // String!
-      userId: number; // Int!
+      note?: string | null; // String
     }
     login: { // args
       email: string; // String!

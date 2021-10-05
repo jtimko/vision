@@ -4,8 +4,8 @@ import { gql, useMutation } from '@apollo/client'
 const SendMessage = (props: { saveMessage: any }) => {
 
     const MSG_QUERY = gql`
-        mutation AddNotesMutation($note: String!, $userId: Int!) {
-            addNotes(note: $note, userId: $userId) {
+        mutation AddNotesMutation($note: String!) {
+            addNotes(note: $note) {
                 id
             }
         }
