@@ -24,11 +24,19 @@ const Notes = () => {
     const {loading, error, data} = useQuery(NOTES_QUERY)
     if (loading) return <p>Loading..</p>
     if (error) return <p>Error..</p>
+    console.debug(data.userNotes)
     return (
         <div>
             <ul>
                 {/* {props.data.map((d) => <li>{<NoteCard data={d} />}</li>)} */}
-                { data.userNotes.map((d: UserNotes) => <li>{<NoteCard data={d} />}</li>)}
+                {/* { data.userNotes.map((d: UserNotes) => <li>{<NoteCard data={d} />}</li>)} */}
+                {data.userNotes.map((d: UserNotes) => {
+                  //console.log("d: " + JSON.stringify(d))
+
+                  return (
+                    <p>{d.note}</p>
+                  )
+                })}
             </ul>
         </div>
     )
