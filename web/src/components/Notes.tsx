@@ -24,7 +24,7 @@ const Notes = () => {
     const {loading, error, data} = useQuery(NOTES_QUERY)
     if (loading) return <p>Loading..</p>
     if (error) return <p>Error..</p>
-    console.debug(data.userNotes)
+    console.log(data.userNotes[0])
     return (
         <div>
             <ul>
