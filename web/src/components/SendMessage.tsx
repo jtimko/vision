@@ -10,7 +10,7 @@ const SendMessage = (props: { saveMessage: any }) => {
             }
         }
     `
-
+    
     const [addNotes] = useMutation(MSG_QUERY);
     const [msg, setMsg] = useState<string>();
 
