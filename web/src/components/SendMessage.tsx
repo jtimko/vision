@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 
-const SendMessage = (props: { saveMessage: any }) => {
+const SendMessage = () => {
 
     const MSG_QUERY = gql`
         mutation AddNotesMutation($note: String!) {
@@ -33,7 +33,7 @@ const SendMessage = (props: { saveMessage: any }) => {
             />
             <input
                 type="submit"
-                onClick={(e) => { e.preventDefault(); dbSave(); props.saveMessage(msg); }}
+                onClick={(e) => { e.preventDefault(); dbSave(); }}
                 name="submit"
                 value="submit"
             />

@@ -20,6 +20,7 @@ function Login() {
 	const history = useHistory()
 	const [ login, { data } ] = useMutation(LOGIN_MUTATION)
 
+	console.log(data) // do not keep
 	const initialValues: LoginValues = {
 		email: "",
 		password: ""
