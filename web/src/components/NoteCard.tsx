@@ -1,13 +1,39 @@
-interface UserNotes {
-    id: number
-    note: string
-}
+import { gql, useMutation } from '@apollo/client'
 
+interface NoteProp {
+    id: number;
+    note: string;
+    completed: boolean;
+  }
 
-const NoteCard = (props: {data: UserNotes}) => {
+const completeStatus = gql`
+mutation Mutation($noteId: Int, $completed: Boolean) {
+    changeStatus(noteId: $noteId, completed: $completed) {
+      note
+    }
+  }
+`
+
+const NoteCard = (props : {data: NoteProp, update: any}) => {
+
+    const [saveStatus] = useMutation(completeStatus)
+
+    const changeStatus = async (id: number, newStatus: boolean) => {
+        try {
+            await saveStatus({variables: {noteId: id, completed: newStatus}});
+            props.update()
+        }
+        catch (e){
+            console.log(e)
+        }
+    }
     return (
-        <div style={{backgroundColor: 'red', height: '50px', width: '300px', margin: '10px'}}>
-            { props.data.note }
+        <div>
+            <p style={{backgroundColor: !props.data.completed ? 'gray' : 'red'}}
+                onClick={() => changeStatus(props.data.id, !props.data.completed)}
+            >
+                {props.data.note}
+            </p>
         </div>
     )
 }

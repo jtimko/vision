@@ -13,15 +13,19 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 type Mutation {
-  addNotes(note: String): Notes
+  changeStatus(completed: Boolean, noteId: Int): Note
   login(email: String!, password: String!): AuthPayload
+  saveNote(note: String): Note
   signup(email: String!, name: String, password: String!): AuthPayload
 }
 
-type Notes {
+type Note {
+  completed: Boolean!
+  createdAt: DateTime!
+  creator: User
   id: Int!
   note: String!
-  user: User
+  updatedAt: DateTime!
 }
 
 input PostCreateInput {
@@ -34,10 +38,10 @@ input PostOrderByUpdatedAtInput {
 }
 
 type Query {
+  allNotes: [User!]!
   allUsers: [User!]!
   me: User
   userNotes: [User!]!
-  users: [User]
 }
 
 enum SortOrder {
@@ -49,8 +53,7 @@ type User {
   email: String!
   id: Int!
   name: String
-  notes: [Notes!]!
-  password: String!
+  notes: [Note!]!
 }
 
 input UserCreateInput {

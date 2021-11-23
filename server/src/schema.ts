@@ -23,23 +23,11 @@ export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 const Query = objectType({
   name: 'Query',
   definition(t) {
-
+    
     t.nonNull.list.nonNull.field('allUsers', {
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
         return context.prisma.user.findMany()
-      },
-    })
-
-    t.nonNull.list.nonNull.field('userNotes', {
-      type: 'User',
-      resolve: (_parent, _args, context: Context) => {
-        const userId = getUserId(context)
-        return context.prisma.user.findMany({
-          where: {
-            id: Number(userId),
-          }
-        })
       },
     })
 
@@ -55,11 +43,28 @@ const Query = objectType({
       },
     })
 
-    t.list.field('users', {
+    t.nonNull.list.nonNull.field('userNotes', {
       type: 'User',
-      resolve: (parent, args, context: Context) => {
-        return context.prisma.user.findMany()
+      resolve: (_parent, _args, context: Context) => {
+        const userId = getUserId(context)
+        return context.prisma.user.findMany({
+          where: {
+            id: Number(userId),
+          }
+        })
       },
+    })
+
+    t.nonNull.list.nonNull.field('allNotes', {
+      type: 'User',
+      resolve: (_parent, _args, context: Context) => {
+        const userId = 1;
+        return context.prisma.user.findMany({
+          where: {
+            id: 1,
+          },
+        })
+      }
     })
   },
 })
@@ -116,58 +121,80 @@ const Mutation = objectType({
       },
     })
 
-    t.field("addNotes", {
-      type: "Notes",
-        args: {
-          note: stringArg()
-        }, 
-        resolve: (parent, { note }, context) => {
-          const userId = getUserId(context)
-          if (!userId) throw new Error("Could not authenticate user.")
-            return context.prisma.notes.create({
-              data: {
-                note: note as string,
-                user: { connect: { id: Number(userId)}}
-              }
-            })
-        }
-      })
-  },
-})
+    t.field('saveNote', {
+      type: 'Note',
+      args: {
+        note: stringArg(),
+      },
+      resolve: (_, { note }, context: Context) => {
+        const userId = getUserId(context)
+        if (!userId) throw new Error("Could not authenticate user.");
+
+        return context.prisma.note.create({
+          data: {
+            note: note as string,
+            creator: { connect: {id: Number(userId)}},
+          },
+        })
+      },
+    })
+
+    t.field('changeStatus', {
+      type: 'Note',
+      args: {
+        noteId: intArg(),
+        completed: booleanArg()
+      },
+      resolve: (_, { noteId, completed }, context: Context) => {
+        return context.prisma.note.update({
+          where: {
+            id: noteId as number,
+          },
+          data: {
+            completed: completed as boolean
+          }
+        })
+      }
+    })
+  }
+ })
 
 const User = objectType({
   name: 'User',
   definition(t) {
     t.nonNull.int('id')
-    t.nonNull.string('email')
-    t.nonNull.string('password')
     t.string('name')
+    t.nonNull.string('email')
     t.nonNull.list.nonNull.field('notes', {
-      type: 'Notes',
-      resolve: (parent, _, context) => {
-        return context.prisma.user.findUnique({
-          where: { id: parent.id || undefined }
-        }).notes()
+      type: 'Note',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.user
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .note()
       },
     })
   },
 })
 
-const Notes = objectType({
-  name: 'Notes',
+const Note = objectType({
+  name: 'Note',
   definition(t) {
+
     t.nonNull.int('id')
+    t.nonNull.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.nonNull.string('note')
-    //t.nonNull.boolean('status')
-    //t.nonNull.field('createdAt', { type: 'DateTime' })
-    t.field('user', {
+    t.nonNull.boolean('completed')
+    t.field('creator', {
       type: 'User',
-      resolve: (parent, _, context) => {
-        return context.prisma.notes
-        .findUnique({
-          where: { id: parent.id || undefined },
-        })
-        .user()
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.note
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .creator()
       },
     })
   },
@@ -221,9 +248,10 @@ const AuthPayload = objectType({
 const schemaWithoutPermissions = makeSchema({
   types: [
     Query,
-    Mutation,//Post,
+    Mutation,
+    //Post,
+    Note,
     User,
-    Notes,
     AuthPayload,
     UserUniqueInput,
     UserCreateInput,
@@ -251,4 +279,3 @@ const schemaWithoutPermissions = makeSchema({
 })
 
 export const schema = applyMiddleware(schemaWithoutPermissions, permissions)
-

@@ -66,16 +66,18 @@ export interface NexusGenObjects {
     user?: NexusGenRootTypes['User'] | null; // User
   }
   Mutation: {};
-  Notes: { // root type
+  Note: { // root type
+    completed: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     note: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: {};
   User: { // root type
     email: string; // String!
     id: number; // Int!
     name?: string | null; // String
-    password: string; // String!
   }
 }
 
@@ -95,27 +97,30 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
   }
   Mutation: { // field return type
-    addNotes: NexusGenRootTypes['Notes'] | null; // Notes
+    changeStatus: NexusGenRootTypes['Note'] | null; // Note
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    saveNote: NexusGenRootTypes['Note'] | null; // Note
     signup: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
   }
-  Notes: { // field return type
+  Note: { // field return type
+    completed: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    creator: NexusGenRootTypes['User'] | null; // User
     id: number; // Int!
     note: string; // String!
-    user: NexusGenRootTypes['User'] | null; // User
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
+    allNotes: NexusGenRootTypes['User'][]; // [User!]!
     allUsers: NexusGenRootTypes['User'][]; // [User!]!
     me: NexusGenRootTypes['User'] | null; // User
     userNotes: NexusGenRootTypes['User'][]; // [User!]!
-    users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
   User: { // field return type
     email: string; // String!
     id: number; // Int!
     name: string | null; // String
-    notes: NexusGenRootTypes['Notes'][]; // [Notes!]!
-    password: string; // String!
+    notes: NexusGenRootTypes['Note'][]; // [Note!]!
   }
 }
 
@@ -125,38 +130,45 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
   }
   Mutation: { // field return type name
-    addNotes: 'Notes'
+    changeStatus: 'Note'
     login: 'AuthPayload'
+    saveNote: 'Note'
     signup: 'AuthPayload'
   }
-  Notes: { // field return type name
+  Note: { // field return type name
+    completed: 'Boolean'
+    createdAt: 'DateTime'
+    creator: 'User'
     id: 'Int'
     note: 'String'
-    user: 'User'
+    updatedAt: 'DateTime'
   }
   Query: { // field return type name
+    allNotes: 'User'
     allUsers: 'User'
     me: 'User'
     userNotes: 'User'
-    users: 'User'
   }
   User: { // field return type name
     email: 'String'
     id: 'Int'
     name: 'String'
-    notes: 'Notes'
-    password: 'String'
+    notes: 'Note'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    addNotes: { // args
-      note?: string | null; // String
+    changeStatus: { // args
+      completed?: boolean | null; // Boolean
+      noteId?: number | null; // Int
     }
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+    saveNote: { // args
+      note?: string | null; // String
     }
     signup: { // args
       email: string; // String!

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -12,14 +12,28 @@ model User {
   email    String  @unique
   password String
   name     String?
-  notes    Notes[]
+  //posts    Post[]
+  note     Note[]
 }
 
-model Notes {
-  id        Int     @id @default(autoincrement())
+// model Post {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String
+//   content   String?
+//   published Boolean  @default(false)
+//   viewCount Int      @default(0)
+//   author    User?    @relation(fields: [authorId], references: [id])
+//   authorId  Int?
+// }
+
+model Note {
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   note      String
-  //status    Boolean @default(true)
-  createdDate DateTime @default(now())
-  user      User?   @relation(fields: [userId], references: [id])
-  userId    Int?    
+  completed Boolean     @default(false)
+  creator   User?       @relation(fields: [creatorId], references: [id])
+  creatorId Int?
 }
