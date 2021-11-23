@@ -22,7 +22,7 @@ const Notes = () => {
     }
 
     return (
-        <div>
+        <div style={{backgroundColor: '#8ac6d1', width: '400px', margin: 'auto', padding: '20px'}}>
             {data && <ShowNotes data={data} updateNotes={updateNotes} /> }
             <SendMessages updatedNotes={updateNotes} />
         </div>

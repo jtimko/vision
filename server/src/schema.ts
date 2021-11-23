@@ -60,8 +60,13 @@ const Query = objectType({
       resolve: (_parent, _args, context: Context) => {
         const userId = 1;
         return context.prisma.user.findMany({
+          // orderBy:  [{
+          //   note: {
+          //     id: Number
+          //   }
+          // }],
           where: {
-            id: 1,
+            id: 1
           },
         })
       }

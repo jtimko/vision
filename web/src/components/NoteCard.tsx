@@ -28,10 +28,8 @@ const NoteCard = (props : {data: NoteProp, update: any}) => {
         }
     }
     return (
-        <div>
-            <p style={{backgroundColor: !props.data.completed ? 'gray' : 'red'}}
-                onClick={() => changeStatus(props.data.id, !props.data.completed)}
-            >
+        <div style={{backgroundColor: !props.data.completed ? '#ffb6b9' : '#d1d9e3', padding: '0 10px', borderRadius: '5px', textDecorationLine: props.data.completed ? 'line-through' : '' }}>
+            <p onClick={() => changeStatus(props.data.id, !props.data.completed)}>
                 {props.data.note}
             </p>
         </div>

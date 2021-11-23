@@ -25,7 +25,7 @@ function App() {
 
 
   return (
-    <ApolloProvider client={client} >
+    <ApolloProvider client={client}>
       <Notes />
     </ApolloProvider>
   )
