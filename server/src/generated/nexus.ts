@@ -98,6 +98,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     changeStatus: NexusGenRootTypes['Note'] | null; // Note
+    deleteNote: NexusGenRootTypes['Note'] | null; // Note
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     saveNote: NexusGenRootTypes['Note'] | null; // Note
     signup: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
@@ -131,6 +132,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     changeStatus: 'Note'
+    deleteNote: 'Note'
     login: 'AuthPayload'
     saveNote: 'Note'
     signup: 'AuthPayload'
@@ -161,6 +163,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     changeStatus: { // args
       completed?: boolean | null; // Boolean
+      noteId?: number | null; // Int
+    }
+    deleteNote: { // args
       noteId?: number | null; // Int
     }
     login: { // args

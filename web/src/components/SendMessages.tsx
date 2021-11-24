@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useMutation, gql } from '@apollo/client';
 
 const SendMessages = (props: { updatedNotes: () => void}) => {
@@ -17,6 +17,9 @@ const SendMessages = (props: { updatedNotes: () => void}) => {
 
     const onchange = () => {
         setMsg(String(inputRef.current?.value));
+
+        console.log(msg)
+
         if (inputRef.current)
             inputRef.current.value = "";
         inputRef.current?.focus()
@@ -26,9 +29,10 @@ const SendMessages = (props: { updatedNotes: () => void}) => {
         const saveDetails = async() => {
             try {
                 await saveNote({ variables: { note: msg }})
+                console.log('triggered')
             }
-            catch {
-                 
+            catch (e){
+                 console.log(e)
             }
         }
         saveDetails();

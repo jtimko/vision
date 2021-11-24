@@ -17,6 +17,7 @@ import {
 } from 'nexus'
 import { DateTimeResolver } from 'graphql-scalars'
 import { Context } from './context'
+import { isContext } from 'vm'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 
@@ -60,14 +61,14 @@ const Query = objectType({
       resolve: (_parent, _args, context: Context) => {
         const userId = 1;
         return context.prisma.user.findMany({
-          // orderBy:  [{
-          //   note: {
-          //     id: Number
-          //   }
-          // }],
-          where: {
-            id: 1
-          },
+          where: { id: 1 },
+          include: {
+            note: {
+              orderBy: {
+                createdAt: "desc"
+              }
+            }
+          }
         })
       }
     })
@@ -142,6 +143,20 @@ const Mutation = objectType({
           },
         })
       },
+    })
+
+    t.field('deleteNote', {
+      type: 'Note',
+      args: {
+        noteId: intArg(),
+      },
+      resolve: (_, { noteId }, context: Context) => {
+        return context.prisma.note.delete( {
+          where: {
+            id: noteId as number,
+          },
+        })
+      }
     })
 
     t.field('changeStatus', {
